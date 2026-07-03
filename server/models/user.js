@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
       default: "client",
     },
 
-    organization: {
+    organization: { 
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
       default: null,

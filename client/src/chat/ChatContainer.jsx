@@ -45,9 +45,9 @@ const ChatContainer = () => {
     const [message, setMessage] = useState('')
   return (
     <>
-        <div className={`${expand ? 'w-full max-w-150' : 'w-100'} ${ openChat ? 'flex' : 'hidden'} flex-col justify-between z-10 bg-gray-200 right-4 top-5 h-140 bottom-50 fixed p-4 rounded-3xl shadow-xl overflow-y-auto justify-between transition-all duration-500 ease-in-out`}>
+        <div className={`${expand ? 'w-full max-w-150' : 'w-100'} ${ openChat ? 'flex' : 'hidden'} max-sm:w-90 flex-col justify-between z-10 bg-gray-200 max-sm:right-0 max-sm:h-screen right-4 top-5 h-140 bottom-50 fixed p-4 rounded-3xl shadow-xl overflow-y-auto justify-between transition-all duration-500 ease-in-out`}>
             <div className="flex items-center justify-between w-full relative">
-                <button onClick={() => setExpand(!expand)} className='bg-gray-300 hover:bg-gray-400 p-2 rounded-full cursor-pointer'>
+                <button onClick={() => setExpand(!expand)} className='bg-gray-300 hover:bg-gray-400 p-2 rounded-full cursor-pointer max-sm:disabled'>
                     {expand 
                     ? <TbLayoutSidebarLeftExpand size={20} />
                     : <TbLayoutSidebarRightExpand size={20} />
@@ -110,7 +110,7 @@ const ChatContainer = () => {
                     </button> 
                 </div>
 
-                <div className='flex items-center justify-center mt-2'>
+                <div className='flex items-center justify-center my-2 '>
                     <p className='text-[10px]'>Powered by</p>
                     <img src={ChatLogo} className='h-5' />
                 </div>

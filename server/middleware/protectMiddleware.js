@@ -1,28 +1,42 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
-export const protect = (req, res, next)=>{
+export const protect = async (req, res, next) => {
     try {
-        const token = req.cookies.token
+        const token = req.cookies.token;
 
-        if(!token){
-            return res.json({
+        if (!token) {
+            return res.status(401).json({
                 success: false,
-                message: "Invalid token"
-            })
+                message: "Authentication required."
+            });
         }
 
-        const decode = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-        if(!decode){
-        return res.json({
+        const user = await User.findById(decoded.id)
+            .select("-password")
+            .populate("organization");
+
+        if (!user) {
+            return res.status(404).json({
                 success: false,
-                message: "unauthorised Access"
-            }) 
+                message: "Account not found."
+            });
         }
 
-        req.userId = decoded.id
-        next()
+        req.user = user;
+
+        next();
+
     } catch (error) {
-        next(error)
+        if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid or expired token."
+            });
+        }
+
+        next(error);
     }
-}
+};

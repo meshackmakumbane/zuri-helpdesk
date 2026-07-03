@@ -19,6 +19,20 @@ export const createBusiness = createAsyncThunk(
     }
 )
 
+export const verifyBusiness = createAsyncThunk(
+    'business/verifyBusiness',
+    async(CommandEvent, { rejectWithValue})=>{
+        try {
+            const { data } = await api.post('/verify-email', code)
+            return data            
+        } catch (error) {
+            return rejectWithValue(
+                response?.data?.message || 'Error verifying the email'
+            )
+        }
+    }
+)
+
 export const businessSlice = createSlice({
     name: "business",
     initialState,
@@ -29,6 +43,7 @@ export const businessSlice = createSlice({
     }, 
     extraReducers:(builder)=>{
         builder
+        /* Register Email ----------------------------------- */
         .addCase('createBusiness.pending', (state)=>{
             state.status = "loading",
             state.error = null
@@ -39,6 +54,20 @@ export const businessSlice = createSlice({
             state.error = null
         })
         .addCase('createBusiness.rejected', (state, action)=>{
+            state.status = 'failed'
+            state.error = action.payload.message
+        })
+        /* Verify Email ----------------------------------- */
+        .addCase("verifyBusiness.pending", (state)=>{
+            state.status = "loading",
+            state.error = null
+        })
+        .addCase("verifyBusiness.fulfilled", (state, action)=>{
+            state.business = action.payload.message
+            state.status = 'success'
+            state.error = null
+        })
+        .addCase('verifyBusiness.rejected', (state, action)=>{
             state.status = 'failed'
             state.error = action.payload.message
         })

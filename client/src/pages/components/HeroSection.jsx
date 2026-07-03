@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import LogoBot from '../../assets/Zuri-01.png'
+import ChatLogo from '../../assets/Chat-Logo-01.png'
 
 import { Link } from 'react-router-dom'
 
@@ -22,7 +23,7 @@ const HeroSection = () => {
             <Link to="/get-started" className="border border-white hover:bg-sky-200/30 text-white text-sm px-6 py-3 rounded-full tracking-tight transition cursor-pointer">
                 Get started
             </Link>
-            <button className="bg-amber-600 hover:bg-amber-700 text-sm text-white px-5 py-3 rounded-full tracking-tight transition cursor-pointer">
+            <button className="bg-red-700 hover:bg-red-600 text-sm text-white px-5 py-3 rounded-full tracking-tight transition cursor-pointer">
                 Chat with us
             </button>
         </div>
@@ -35,6 +36,11 @@ const HeroSection = () => {
             <button className="border border-black hover:bg-black hover:text-white text-black text-sm px-6 py-3 rounded-sm tracking-tight transition cursor-pointer">
                 Watch a 4-Minute Zuri® Demo
             </button>
+        </div>
+
+        <div className='flex items-center justify-center mt-2'>
+            <p className='text-[12px] font-semibold'>Powered by</p>
+            <img src={ChatLogo} className='h-8' />
         </div>
     </div>
   )

@@ -50,9 +50,9 @@ const GetStarted = () => {
             <Link to='/'>
               <img src={Logo} alt="Logo" className='h-10'/>
             </Link>
-              <button className="border-2 border-red-600 bg-red-600 hover:bg-red-700 hover:border-red-700 text-sm text-white px-8 py-2 rounded-md tracking-tight transition cursor-pointer">
+              <Link to='/auth/login' className="border-2 border-red-600 bg-red-600 hover:bg-red-700 hover:border-red-700 text-sm text-white px-8 py-2 rounded-md tracking-tight transition cursor-pointer">
                   Log in
-              </button>
+              </Link>
           </div>
 
           <div>
@@ -95,8 +95,8 @@ const GetStarted = () => {
                 <p className="text-red-500 text-center text-sm font-semibold">{error}</p>
               </form>
 
-              <p className='text-center mt-4 text-gray-600 text-[14px]'>Already have an account? <Link to="#" className="text-red-600">Log in</Link></p>
-              <p className='text-center mt-10 text-gray-600 text-sm'>You agree to our Terms of Use and Privacy Policy</p> 
+              <p className='text-center mt-4 text-gray-600 text-[14px]'>Already have an account? <Link to="/auth/login" className="text-red-600">Log in</Link></p>
+              <p className='text-center mt-10 text-gray-600 text-[10px]'>You agree to our Terms of Use and Privacy Policy</p> 
           </div>
 
           <div className='flex items-center justify-center mt-2'>

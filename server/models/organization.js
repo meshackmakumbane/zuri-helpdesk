@@ -17,8 +17,14 @@ const organizationSchema = new mongoose.Schema(
     },
 
     logo: {
-      type: String,
-      default: "",
+        url: {
+            type: String,
+            default: ""
+        },
+        public_id: {
+            type: String,
+            default: ""
+        }
     },
 
     email: {
@@ -90,6 +96,10 @@ const organizationSchema = new mongoose.Schema(
         type: String,
         default: "Africa/Johannesburg",
       },
+    },
+    isVerified:{
+      type: Boolean,
+      default: false
     },
     verificationCode:{
       type: String
