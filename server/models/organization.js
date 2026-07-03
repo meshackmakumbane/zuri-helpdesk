@@ -91,6 +91,13 @@ const organizationSchema = new mongoose.Schema(
         default: "Africa/Johannesburg",
       },
     },
+    verificationCode:{
+      type: String
+    },
+    verificationCodeExpiresAt:{
+      type: Date
+    }
+
   },
   {
     timestamps: true,

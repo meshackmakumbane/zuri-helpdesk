@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import LogoBot from '../../assets/Zuri-01.png'
 
+import { Link } from 'react-router-dom'
+
 const HeroSection = () => {
   const[mobileOpen, setMobileOpen] = useState(false)
   return (
@@ -17,9 +19,9 @@ const HeroSection = () => {
         </p>
 
         <div className='flex gap-4 mt-8'>
-            <button className="border border-white hover:bg-sky-200/30 text-white text-sm px-6 py-3 rounded-full tracking-tight transition cursor-pointer">
+            <Link to="/get-started" className="border border-white hover:bg-sky-200/30 text-white text-sm px-6 py-3 rounded-full tracking-tight transition cursor-pointer">
                 Get started
-            </button>
+            </Link>
             <button className="bg-amber-600 hover:bg-amber-700 text-sm text-white px-5 py-3 rounded-full tracking-tight transition cursor-pointer">
                 Chat with us
             </button>
