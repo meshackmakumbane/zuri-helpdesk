@@ -76,7 +76,7 @@ A modern, scalable, multi-tenant Helpdesk & Customer Support platform built to h
 
 ---
 
-# 📁 Project Structure
+# Project Structure
 
 ```
 zuri-helpdesk/
@@ -112,7 +112,7 @@ zuri-helpdesk/
 
 ---
 
-# ⚙️ Installation
+# Installation
 
 ## Clone the repository
 
@@ -174,7 +174,7 @@ Supported roles include:
 
 ---
 
-# 👥 User Roles
+# User Roles
 
 ## Super Admin
 
