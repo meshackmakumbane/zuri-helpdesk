@@ -135,7 +135,6 @@ export const createAdmin = async (req, res, next) => {
         next(error);
     }
 };
- 
 
 
 /* CREATE CLIENT ------------------------------------ */
