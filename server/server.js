@@ -48,7 +48,7 @@ app.get("/health", (req, res) => {
 
 /* ---------- API Routes ---------- */
 app.use("/api/business", businessRoutes);
-app.use('/api/user/', userRoutes)
+app.use('/api/user', userRoutes)
 // app.use("/api/tickets", ticketRoutes);
 
 /* ---------- 404 ---------- */
