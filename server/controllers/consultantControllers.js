@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import User from "../models/user.js";
 
-import { inviteConsultant } from "../email/sendEmails.js";
+import { sendConsultantInviteEmail } from "../email/sendEmails.js";
 
 /* CREATE CONSULTANT ------------------------------------ */
 export const inviteConsultant = async (req, res, next) => {
