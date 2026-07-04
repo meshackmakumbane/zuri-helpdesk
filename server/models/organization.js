@@ -105,6 +105,9 @@ const organizationSchema = new mongoose.Schema(
     },
     verificationCodeExpiresAt:{
       type: Date
+    },
+    token:{
+      type: String
     }
 
   },

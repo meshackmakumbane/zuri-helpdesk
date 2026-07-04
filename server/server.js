@@ -10,6 +10,7 @@ import { initializeWebsocket } from "./websocket/websocket.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
 import businessRoutes from './routes/businessRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.get("/health", (req, res) => {
 
 /* ---------- API Routes ---------- */
 app.use("/api/business", businessRoutes);
+app.use('/api/user/', userRoutes)
 // app.use("/api/tickets", ticketRoutes);
 
 /* ---------- 404 ---------- */

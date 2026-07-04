@@ -7,6 +7,7 @@ import cloud from "../config/cloudinary.js";
 import streamifier from "streamifier";
 
 import { nanoid } from "nanoid";
+import { organizationToken } from '../utils/organizationToken.js';
 
 /* Create Business --------------------------------------------------- */
 export const createBusiness = async(req, res, next)=> {
@@ -98,12 +99,16 @@ export const verifyBusiness = async (req, res, next) => {
                 message: "Invalid or expired verification code."
             });
         }
+        const generateToken = () =>{
+            nanoId(48)
+        } 
 
         business.isVerified = true;
         business.verificationCode = null;
         business.verificationCodeExpiresAt = null;
-
         await business.save();
+
+        await organizationToken(business._id, res)
 
         return res.status(200).json({
             success: true,

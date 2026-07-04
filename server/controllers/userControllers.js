@@ -1,6 +1,8 @@
 import User from '../models/user.js';
+import Organization from '../models/organization.js'
 import bcrypt from 'bcryptjs';
 import mongoose from "mongoose";
+import { nanoid } from 'nanoid';
 
 /* CREATE SUPER ADMIN ------------------------------------ */
 export const createSuperAdmin = async (req, res, next) => {
@@ -65,116 +67,109 @@ export const createSuperAdmin = async (req, res, next) => {
     }
 };
 
-/* CREATE ORGANIZATION & ADMIN ------------------------------------ */
-export const createOrganizationAdmin = async (req, res, next) => {
-    const session = await mongoose.startSession();
+/* CREATE ADMIN ------------------------------------ */
+export const createAdmin = async (req, res, next) => {
+    const { firstName, lastName, email, password } = req.body;
+    const { slug } = req.params;
 
     try {
-        session.startTransaction();
+        /* ---------- Validate Input ---------- */
+        if (!firstName || !lastName || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide all admin details."
+            });
+        }
 
-        const {
-            organizationName,
-            slug,
+        /* ---------- Get Setup Token ---------- */
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid setup token."
+            });
+        }
+
+        const setupToken = authHeader.split(" ")[1];
+
+        /* ---------- Find Organization ---------- */
+        const organization = await Organization.findOne({ slug });
+
+        if (!organization) {
+            return res.status(404).json({
+                success: false,
+                message: "Organization not found."
+            });
+        }
+
+        /* ---------- Check Email Verification ---------- */
+        if (!organization.isVerified) {
+            return res.status(403).json({
+                success: false,
+                message: "Organization email has not been verified."
+            });
+        }
+
+        /* ---------- Verify Setup Token ---------- */
+        if (organization.token !== setupToken) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid or expired setup token."
+            });
+        }
+
+        /* ---------- Check Existing Admin ---------- */
+        const existingAdmin = await User.findOne({
+            organization: organization._id,
+            role: "admin"
+        });
+
+        if (existingAdmin) {
+            return res.status(409).json({
+                success: false,
+                message: "This organization already has an administrator."
+            });
+        }
+
+        /* ---------- Check Email ---------- */
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                message: "Email already exists."
+            });
+        }
+
+        /* ---------- Hash Password ---------- */
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        /* ---------- Create Admin ---------- */
+        const admin = await User.create({
             firstName,
             lastName,
             email,
-            password,
-            phone,
-        } = req.body;
-
-        // Validate
-        if (
-            !organizationName ||
-            !slug ||
-            !firstName ||
-            !lastName ||
-            !email ||
-            !password
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "Please provide all required fields.",
-            });
-        }
-
-        // Check organization
-        const organizationExists = await Organization.findOne({
-            $or: [
-                { name: organizationName },
-                { slug: slug.toLowerCase() },
-            ],
-        }).session(session);
-
-        if (organizationExists) {
-            await session.abortTransaction();
-            session.endSession();
-
-            return res.status(409).json({
-                success: false,
-                message: "Organization already exists.",
-            });
-        }
-
-        // Check email
-        const emailExists = await User.findOne({ email }).session(session);
-
-        if (emailExists) {
-            await session.abortTransaction();
-            session.endSession();
-
-            return res.status(409).json({
-                success: false,
-                message: "Email already exists.",
-            });
-        }
-
-        // Create Organization
-        const organization = await Organization.create(
-            [
-                {
-                    name: organizationName,
-                    slug: slug.toLowerCase(),
-                },
-            ],
-            { session }
-        );
-
-        // Create Admin
-        const admin = await User.create(
-            [
-                {
-                    firstName,
-                    lastName,
-                    email,
-                    password,
-                    phone,
-                    role: "admin",
-                    organization: organization[0]._id,
-                },
-            ],
-            { session }
-        );
-
-        await session.commitTransaction();
-        session.endSession();
-
-        return res.status(201).json({
-            success: true,
-            message: "Organization created successfully.",
-            data: {
-                organization: organization[0],
-                admin: {
-                    id: admin[0]._id,
-                    firstName: admin[0].firstName,
-                    lastName: admin[0].lastName,
-                    email: admin[0].email,
-                    role: admin[0].role,
-                },
-            },
+            password: hashedPassword,
+            role: "admin",
+            organization: organization._id,
+            token: nanoid(32)
         });
+
+        /* ---------- Invalidate Setup Token ---------- */
+        organization.token = null;
+        await organization.save();
+
+        res.status(201).json({
+            success: true,
+            message: "Admin account created successfully.",
+            adminId: admin._id
+        });
+
+        // TODO:
+        // Send admin verification email
+
     } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
         next(error);
     }
 };
@@ -205,7 +200,7 @@ export const createConsultant = async (req, res, next) => {
             firstName,
             lastName,
             email,
-            password,
+            password: hashedPassword
             phone,
             role: "consultant",
             organization: req.user.organization,
