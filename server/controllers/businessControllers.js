@@ -67,7 +67,8 @@ export const createBusiness = async(req, res, next)=> {
 
         res.status(201).json({
             success: true,
-            message: "Organization created. Please verify your email."
+            message: "Organization created. Please verify your email.",
+            code
         })
 
     } catch (error) {
