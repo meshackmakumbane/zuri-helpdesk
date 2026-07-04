@@ -7,6 +7,7 @@ import { upload } from "../middleware/upload.js";
 
 router.patch("/logo",protect, upload.single("logo"),updateBusinessLogo);
 router.post('/onboarding', createBusiness)
-router.post('verify', verifyBusiness)
+router.post('/verify', verifyBusiness)
 
 export default router
+
