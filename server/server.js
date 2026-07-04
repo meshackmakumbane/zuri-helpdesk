@@ -11,6 +11,7 @@ import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
 import businessRoutes from './routes/businessRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.get("/health", (req, res) => {
 /* ---------- API Routes ---------- */
 app.use("/api/business", businessRoutes);
 app.use('/api/users', userRoutes)
+app.use('/api/auth', authRoutes)
 // app.use("/api/tickets", ticketRoutes);
 
 /* ---------- 404 ---------- */

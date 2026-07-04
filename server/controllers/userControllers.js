@@ -136,56 +136,7 @@ export const createAdmin = async (req, res, next) => {
     }
 };
  
-/* CREATE CONSULTANT ------------------------------------ */
-export const createConsultant = async (req, res, next) => {
-    const { firstName, lastName, email, password, phone } = req.body;
 
-    try {
-        if (!firstName || !lastName || !email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: "Please provide all required fields.",
-            });
-        }
-
-        // Check if email already exists
-        const userExists = await User.findOne({ email });
-
-        if (userExists) {
-            return res.status(409).json({
-                success: false,
-                message: "Email is already registered.",
-            });
-        }
-
-        const consultant = await User.create({
-            firstName,
-            lastName,
-            email,
-            password: hashedPassword,
-            phone,
-            role: "consultant",
-            organization: req.user.organization,
-        });
-
-        return res.status(201).json({
-            success: true,
-            message: "Consultant created successfully.",
-            data: {
-                id: consultant._id,
-                firstName: consultant.firstName,
-                lastName: consultant.lastName,
-                email: consultant.email,
-                phone: consultant.phone,
-                role: consultant.role,
-                organization: consultant.organization,
-                createdAt: consultant.createdAt,
-            },
-        });
-    } catch (error) {
-        next(error);
-    }
-};
 
 /* CREATE CLIENT ------------------------------------ */
 export const createClient = async (req, res, next) => {

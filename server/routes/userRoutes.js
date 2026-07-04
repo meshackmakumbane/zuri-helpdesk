@@ -10,10 +10,6 @@ router.post(
     createAdmin
 );
 
-router.post(
-    "/invite-consultant",
-    adminMiddleware,
-    inviteConsultant
-);
+
 
 export default router;
