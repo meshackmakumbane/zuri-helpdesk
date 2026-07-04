@@ -99,21 +99,22 @@ export const verifyBusiness = async (req, res, next) => {
                 message: "Invalid or expired verification code."
             });
         }
-        const generateToken = () =>{
-            nanoId(48)
-        } 
 
         business.isVerified = true;
         business.verificationCode = null;
         business.verificationCodeExpiresAt = null;
+
         await business.save();
 
-        await organizationToken(business._id, res)
+        // Set the setup cookie
+        organizationToken(business._id, res);
 
         return res.status(200).json({
             success: true,
-            message: "Email verified successfully."
+            message: "Email verified successfully.",
+            slug: business.slug
         });
+
     } catch (error) {
         next(error);
     }
