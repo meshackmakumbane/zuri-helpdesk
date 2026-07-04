@@ -4,8 +4,8 @@ const router = express.Router()
 import { 
         createAdmin,
     
-} from '../controllers/userControllers'
-import { organizationMiddleware } from '../middleware/organizationMiddleware'
+} from '../controllers/userControllers.js'
+import { organizationMiddleware } from '../middleware/organizationMiddleware.js'
 
 
 router.post('/create-admin/:slug', 
