@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken'
 
-import jwt from "jsonwebtoken";
-
 export const organizationToken = (organizationId, res) => {
     const token = jwt.sign(
         { id: organizationId },

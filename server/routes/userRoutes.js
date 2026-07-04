@@ -5,7 +5,12 @@ import {
         createAdmin,
     
 } from '../controllers/userControllers'
+import { organizationMiddleware } from '../middleware/organizationMiddleware'
 
-router.post('/create-admin/:slug', createAdmin)
+
+router.post('/create-admin/:slug', 
+    organizationMiddleware, 
+    createAdmin
+)
 
 export default router

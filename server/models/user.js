@@ -64,9 +64,6 @@ const userSchema = new mongoose.Schema(
 
     lastLogin: {
       type: Date,
-    },
-    token:{
-      token: String
     }
   },
   {

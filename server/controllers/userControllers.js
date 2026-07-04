@@ -71,6 +71,7 @@ export const createSuperAdmin = async (req, res, next) => {
 export const createAdmin = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
     const { slug } = req.params;
+    const organizationId = req.organization._id
 
     try {
         /* ---------- Validate Input ---------- */
@@ -81,20 +82,8 @@ export const createAdmin = async (req, res, next) => {
             });
         }
 
-        /* ---------- Get Setup Token ---------- */
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid setup token."
-            });
-        }
-
-        const setupToken = authHeader.split(" ")[1];
-
         /* ---------- Find Organization ---------- */
-        const organization = await Organization.findOne({ slug });
+        const organization = await Organization.findOne({ organizationId });
 
         if (!organization) {
             return res.status(404).json({
@@ -152,8 +141,7 @@ export const createAdmin = async (req, res, next) => {
             email,
             password: hashedPassword,
             role: "admin",
-            organization: organization._id,
-            token: nanoid(32)
+            organization: organization._id
         });
 
         /* ---------- Invalidate Setup Token ---------- */
@@ -163,7 +151,6 @@ export const createAdmin = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Admin account created successfully.",
-            adminId: admin._id
         });
 
         // TODO:
@@ -200,7 +187,7 @@ export const createConsultant = async (req, res, next) => {
             firstName,
             lastName,
             email,
-            password: hashedPassword
+            password: hashedPassword,
             phone,
             role: "consultant",
             organization: req.user.organization,
