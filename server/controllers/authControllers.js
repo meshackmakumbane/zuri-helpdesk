@@ -44,7 +44,7 @@ export const loginUser = async (req, res, next) => {
 
         const { password: _, ...safeUser } = user.toObject();
 
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Logged in successfully.",
             user: safeUser
