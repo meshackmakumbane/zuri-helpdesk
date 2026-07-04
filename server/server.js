@@ -63,7 +63,7 @@ app.use(errorMiddleware);
 /* ---------- Start Server ---------- */
 const startServer = async () => {
     try {
-        //await connectDB(); 
+        await connectDB(); 
 
         initializeWebsocket(server); 
 
