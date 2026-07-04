@@ -6,9 +6,9 @@ import { sendConsultantInviteEmail } from "../email/sendEmails.js";
 /* CREATE CONSULTANT ------------------------------------ */
 export const inviteConsultant = async (req, res, next) => {
     try {
-        const { email } = req.body;
+        const { firstName, lastName, email } = req.body;
 
-        if (!email) {
+        if (!firstName || !lastName || !email ) {
             return res.status(400).json({
                 success: false,
                 message: "Please provide an email."
@@ -29,6 +29,8 @@ export const inviteConsultant = async (req, res, next) => {
         const token = crypto.randomBytes(32).toString("hex");
 
         const consultant = await User.create({
+            firstName,
+            lastName,
             email: email.toLowerCase(),
             role: "consultant",
             organization: req.admin.organization._id,
