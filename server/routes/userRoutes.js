@@ -1,15 +1,13 @@
-import express from 'express'
-const router = express.Router()
+import express from 'express';
+const router = express.Router();
 
-import { 
-        createAdmin,   
-} from '../controllers/userControllers.js'
-import { organizationMiddleware } from '../middleware/organizationMiddleware.js'
+import { createAdmin } from '../controllers/userControllers.js';
+import { organizationMiddleware } from '../middleware/organizationMiddleware.js';
 
-
-router.post('/create-admin/:slug', 
-    organizationMiddleware, 
+router.post(
+    '/create-admin',
+    organizationMiddleware,
     createAdmin
-)
+);
 
-export default router
+export default router;

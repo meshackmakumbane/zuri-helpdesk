@@ -69,11 +69,11 @@ export const createSuperAdmin = async (req, res, next) => {
 
 /* CREATE ADMIN ------------------------------------ */
 export const createAdmin = async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
-    const { slug } = req.params;
-    const organizationId = req.organization._id
-
     try {
+        const { firstName, lastName, email, password } = req.body;
+
+        const organization = req.organization;
+
         /* ---------- Validate Input ---------- */
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({
@@ -82,29 +82,11 @@ export const createAdmin = async (req, res, next) => {
             });
         }
 
-        /* ---------- Find Organization ---------- */
-        const organization = await Organization.findOne({ organizationId });
-
-        if (!organization) {
-            return res.status(404).json({
-                success: false,
-                message: "Organization not found."
-            });
-        }
-
         /* ---------- Check Email Verification ---------- */
         if (!organization.isVerified) {
             return res.status(403).json({
                 success: false,
                 message: "Organization email has not been verified."
-            });
-        }
-
-        /* ---------- Verify Setup Token ---------- */
-        if (organization.token !== setupToken) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid or expired setup token."
             });
         }
 
@@ -135,7 +117,7 @@ export const createAdmin = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         /* ---------- Create Admin ---------- */
-        const admin = await User.create({
+        await User.create({
             firstName,
             lastName,
             email,
@@ -144,23 +126,15 @@ export const createAdmin = async (req, res, next) => {
             organization: organization._id
         });
 
-        /* ---------- Invalidate Setup Token ---------- */
-        organization.token = null;
-        await organization.save();
-
         res.status(201).json({
             success: true,
-            message: "Admin account created successfully.",
+            message: "Admin account created successfully."
         });
-
-        // TODO:
-        // Send admin verification email
 
     } catch (error) {
         next(error);
     }
 };
-
 /* CREATE CONSULTANT ------------------------------------ */
 export const createConsultant = async (req, res, next) => {
     const { firstName, lastName, email, password, phone } = req.body;

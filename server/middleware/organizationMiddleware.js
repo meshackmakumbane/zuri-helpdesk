@@ -1,20 +1,20 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import Organization from '../models/organization.js';
 
-export const organizationMiddleware = async (req, res, next)=>{
+export const organizationMiddleware = async (req, res, next) => {
     try {
-        const token = req.cookies.organizationToken
+        const token = req.cookies.organizationToken;
 
-        if(!token){
+        if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "Authentication required."
             });
         }
 
-        const decode = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-        const organization = await Organization.findById(decode.id)
+        const organization = await Organization.findById(decoded.id);
 
         if (!organization) {
             return res.status(404).json({
@@ -23,9 +23,10 @@ export const organizationMiddleware = async (req, res, next)=>{
             });
         }
 
-        req.organization = organization
-        next()
+        req.organization = organization;
+
+        next();
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
