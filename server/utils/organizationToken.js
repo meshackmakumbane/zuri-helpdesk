@@ -18,5 +18,4 @@ export const organizationToken = (organizationId, res) => {
         maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
-    return token;
 };
