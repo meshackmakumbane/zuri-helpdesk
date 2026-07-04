@@ -8,7 +8,7 @@ import streamifier from "streamifier";
 
 import { nanoid } from "nanoid";
 
-/* Verify Email --------------------------------------------------- */
+/* Create Business --------------------------------------------------- */
 export const createBusiness = async(req, res, next)=> {
     const { name, email } = req.body
     try {

@@ -9,6 +9,8 @@ import connectDB from "./config/connectDB.js";
 import { initializeWebsocket } from "./websocket/websocket.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
+import businessRoutes from './routes/businessRoutes.js'
+
 dotenv.config();
 
 const app = express();
@@ -44,7 +46,7 @@ app.get("/health", (req, res) => {
 });
 
 /* ---------- API Routes ---------- */
-// app.use("/api/auth", authRoutes);
+app.use("/api/onboarding", businessRoutes);
 // app.use("/api/tickets", ticketRoutes);
 
 /* ---------- 404 ---------- */
