@@ -2,8 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import { 
-        createAdmin,
-    
+        createAdmin,   
 } from '../controllers/userControllers.js'
 import { organizationMiddleware } from '../middleware/organizationMiddleware.js'
 
