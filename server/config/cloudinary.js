@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-(async function() {
+const cloud = async function() {
 
     // Configuration
     cloudinary.config({ 
@@ -39,4 +39,6 @@ import { v2 as cloudinary } from 'cloudinary';
     });
     
     console.log(autoCropUrl);    
-})();
+};
+
+export default cloud

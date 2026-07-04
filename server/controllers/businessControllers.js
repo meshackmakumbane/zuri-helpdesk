@@ -1,9 +1,9 @@
 import { sendVerificationCode } from '../email/sendEmails.js'
-import Organization from '../models/organization'
+import Organization from '../models/organization.js'
 import User from '../models/user.js'
 
-import { verificationCode } from '../utils/verificationCode'
-import cloudinary from "../config/cloudinary.js";
+import { verificationCode } from '../utils/verificationCode.js'
+import cloud from "../config/cloudinary.js";
 import streamifier from "streamifier";
 
 import { nanoid } from "nanoid";

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'https://zuri-helpdesk-1.onrender.com',
+    baseURL: 'https://zuri-helpdesk-main.onrender.com',
     withCredentials: true
 })
 
