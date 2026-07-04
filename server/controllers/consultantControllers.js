@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import User from "../models/user.js";
+import bcrypt from "bcryptjs";
 
 import { sendConsultantInviteEmail } from "../email/sendEmails.js";
 
@@ -58,3 +59,47 @@ export const inviteConsultant = async (req, res, next) => {
     }
 };
 
+/* CONSULTANT (CREATES PASSWORD) ------------------------------------ */
+export const consultantPassword = async (req, res, next) => {
+    try {
+        const { password } = req.body;
+        const { token } = req.params;
+
+        if (!password) {
+            return res.status(400).json({
+                success: false,
+                message: "Password is required."
+            });
+        }
+
+        const consultant = await User.findOne({
+            inviteToken: token,
+            inviteTokenExpires: { $gt: Date.now() }
+        });
+
+        if (!consultant) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired invitation link."
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        consultant.password = hashedPassword;
+        consultant.inviteToken = null;
+        consultant.inviteTokenExpires = null;
+        consultant.inviteAccepted = true;
+        consultant.isActive = true;
+
+        await consultant.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Account created successfully. You can now log in."
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
