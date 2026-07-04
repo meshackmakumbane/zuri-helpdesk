@@ -18,6 +18,7 @@ export const loginUser = async (req, res, next) => {
         const normalizedEmail = email.trim().toLowerCase();
 
         const user = await User.findOne({ email: normalizedEmail })
+            .select("+password")
             .populate("organization");
 
         if (!user) {
