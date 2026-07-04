@@ -135,6 +135,7 @@ export const createAdmin = async (req, res, next) => {
         next(error);
     }
 };
+ 
 /* CREATE CONSULTANT ------------------------------------ */
 export const createConsultant = async (req, res, next) => {
     const { firstName, lastName, email, password, phone } = req.body;

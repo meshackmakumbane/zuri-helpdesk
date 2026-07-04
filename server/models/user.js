@@ -61,7 +61,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    inviteToken: String,
+    inviteTokenExpires: Date,
+    inviteAccepted: {
+        type: Boolean,
+        default: false
+    },
     lastLogin: {
       type: Date,
     }
