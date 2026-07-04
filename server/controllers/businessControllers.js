@@ -1,4 +1,4 @@
-import { sendVerificationCode } from '../email/sendEmails'
+import { sendVerificationCode } from '../email/sendEmails.js'
 import Organization from '../models/organization'
 import User from '../models/user.js'
 
